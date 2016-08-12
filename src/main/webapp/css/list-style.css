@@ -1,0 +1,32 @@
+.list-bg {
+    position: relative;
+    background-color: #efefef;
+    padding-right: 10px;
+}
+
+.article-list {
+    line-height: 2.5;
+    padding-left: 40px;
+}
+
+.article-list ul {
+    margin-bottom: 50px;
+}
+
+.article-list ul li img {
+    margin-top: 6px;
+
+}
+
+.article-list ul li {
+    border-bottom: 1px solid lightblue;
+    width: 85%;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.article-list ul li a {
+    text-align: center;
+    font-size: 16px;
+    margin-top: 6px;
+}

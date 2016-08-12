@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdogs.lightBlog.dao.NoticeDao">
+    
+	<sql id="noticeColumns">
+		ID,
+		content,
+		title,
+		create_time AS createTime,
+		deleted,
+		author_id AS authorId
+	</sql>
+	
+	<!-- 获取公告ID和标题列表 -->
+	<sql id="partialNoticeColumns">
+		tb_notice.ID,
+		tb_notice.title,
+		tb_notice.create_time AS createTime,
+		tb_notice.author_id AS authorId
+	</sql>
+	
+	<!-- 根据相应参数查询查询公告信息（带分页） -->
+	<select id="selectNotices" parameterType="java.util.Map" resultType="com.cdogs.lightBlog.dto.NoticeDto">
+	    SELECT 
+			<include refid="noticeColumns"/>
+			<!-- 增加显示公告作者字段 -->
+			,(SELECT name FROM tb_admin WHERE id=tb_notice.author_id)
+			 AS authorName
+		FROM
+			tb_notice
+		WHERE
+			deleted=0
+			<if test="id != null">
+				and id=#{id}
+			</if>
+			<if test="title != null">
+				and title=#{title}
+			</if>
+			<if test="content != null">
+				and content=#{content}
+			</if>
+		ORDER BY create_time DESC limit #{pageNo} , #{pageSize}
+	</select>
+	<!-- 检索公告 -->
+	<select id="searchNotice" parameterType="java.util.Map" resultType="com.cdogs.lightBlog.dto.NoticeDto">
+		SELECT 
+			<include refid="noticeColumns"/>
+			<!-- 增加显示公告作者字段 -->
+			,(SELECT name FROM tb_admin WHERE id=tb_notice.author_id)
+			AS authorName
+		FROM 
+			tb_notice
+		WHERE 
+			deleted=0 AND id= #{id} OR title LIKE #{name};
+	</select>
+	<!-- 查询相应公告 -->
+	<select id="selectNotice" parameterType="com.cdogs.lightBlog.pojo.Notice" resultType="com.cdogs.lightBlog.dto.NoticeDto">
+		SELECT 
+			<include refid="noticeColumns"/>
+			<!-- 增加显示公告作者字段 -->
+			,(SELECT name FROM tb_admin WHERE id=tb_notice.author_id)
+			AS authorName
+		FROM
+			tb_notice
+		WHERE
+			deleted=0
+			<if test="id != null">
+				and id=#{id}
+			</if>
+			<if test="title != null">
+				and title=#{title}
+			</if>
+	</select>
+	
+	<!-- 获取公告归档列表,按月份归档 -->
+	<select id="selectArchiveByTime" resultType="com.cdogs.lightBlog.dto.NoticeDto">
+		SELECT 
+			COUNT(id) AS count,create_time AS createTime
+		FROM 
+			tb_notice
+		WHERE		
+			deleted=0 
+		GROUP BY 
+			MONTH(create_time),YEAR(create_time)
+	</select>
+	
+	<!-- 按时间段检索公告 -->
+	<select id="selectNoticesByTime" parameterType="java.util.Map"
+		resultType="com.cdogs.lightBlog.dto.NoticeDto">
+	    SELECT 
+			<include refid="noticeColumns"/>
+			<!-- 增加显示公告作者字段 -->
+			,(SELECT name FROM tb_admin WHERE id=tb_notice.author_id)
+			AS authorName
+		FROM
+			tb_notice
+		WHERE
+			deleted=0 AND MONTH(create_time)=MONTH(#{time})
+	</select>
+	
+	<!-- 公告数量统计 -->
+	<select id="countOfNotices" parameterType="java.util.Map" resultType="int">
+	    SELECT 
+			count(id)
+		FROM
+			tb_notice
+		WHERE
+			deleted=0
+	</select>
+
+	<!-- 添加公告 -->
+	<insert id="addNotice" parameterType="com.cdogs.lightBlog.pojo.Notice">
+		INSERT INTO tb_notice
+		(
+			content,title,author_id,create_time
+		)
+		VALUES 
+		(
+			#{content},#{title},#{authorId},now()
+		)
+		<selectKey resultType="int" order="AFTER" keyProperty="id">
+		    <![CDATA[ SELECT LAST_INSERT_ID() AS ID  ]]> 
+		</selectKey>
+	</insert>
+
+	<!-- 更新公告信息 -->
+	<update id="updateNotice" parameterType="com.cdogs.lightBlog.pojo.Notice">
+		UPDATE tb_notice SET
+		
+		<!-- 更新公告操作的主要字段 -->
+		<if test="title != null">
+			title=#{title},
+		</if>
+		<if test="content != null">
+			content=#{content},
+		</if>
+		<!-- 更新公告的其他字段 -->
+		<if test="deleted != null">
+			deleted=#{deleted}
+		</if>	
+		WHERE id=#{id}	
+	</update>	
+</mapper>

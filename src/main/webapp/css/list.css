@@ -1,0 +1,29 @@
+.article-list {
+    line-height: 2.5;
+    padding-left: 10px;
+}
+
+.article-list ul {
+    margin-bottom: 50px;
+}
+
+.article-list ul li {
+    height: 28px;
+    margin-top: 10px;
+    text-overflow: ellipsis;
+    border-bottom: 1px solid lightblue;
+}
+
+
+.article-list ul li img {
+    margin-bottom: 16px;
+}
+
+.article-list a {
+    padding-bottom: 10px;
+    font-size: 16px;
+    color: #4a4a4a;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

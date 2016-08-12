@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdogs.lightBlog.dao.AdminDao">
+    
+
+	<sql id="adminColumns">
+		ID,
+		name,
+		password
+	</sql>
+	
+	<select id="getAdmin" parameterType="com.cdogs.lightBlog.pojo.Admin" resultType="com.cdogs.lightBlog.pojo.Admin">
+		SELECT 
+			<include refid="adminColumns"/>
+		FROM
+			tb_admin
+		WHERE
+			1=1
+			<if test="password != null">
+				AND password=#{password}
+			</if>
+			<if test="name != null">
+				AND name=#{name}
+			</if>
+			<if test="id != null">
+				AND id=#{id}
+			</if>
+			
+	</select>
+	
+	<!-- 更新管理员信息 -->
+	<update id="updateAdmin" parameterType="com.cdogs.lightBlog.pojo.Admin">
+		UPDATE tb_admin SET
+		<if test="name != null and name != '' ">
+			name=#{name}
+		</if>	
+		<if test="password != null and password != '' ">
+			,password=#{password}
+		</if>					
+		WHERE id=#{id}	
+	</update>
+
+	<insert id="addAdmin" parameterType="com.cdogs.lightBlog.pojo.Admin">
+		INSERT INTO tb_admin
+		(
+			  name,password
+		)
+		VALUES
+		(
+		#{name},#{password}
+		)
+		<selectKey resultType="int" order="AFTER" keyProperty="id">
+			<![CDATA[ SELECT LAST_INSERT_ID() AS ID  ]]>
+		</selectKey>
+	</insert>
+
+</mapper>
