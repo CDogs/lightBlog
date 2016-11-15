@@ -1,5 +1,6 @@
 package com.cdogs.lightBlog.controller;
 
+import com.cdogs.lightBlog.auth.AuthPassport;
 import com.cdogs.lightBlog.constants.Common;
 import com.cdogs.lightBlog.dto.ArticleCategoryDto;
 import com.cdogs.lightBlog.dto.ArticleDto;
@@ -143,6 +144,7 @@ public class ArticleController extends BaseController {
      * @return
      * @see [类、类#方法、类#成员]
      */
+
     @RequestMapping("/read")
     public ModelAndView getArticle(int id, String flag) {
 

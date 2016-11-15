@@ -1,10 +1,17 @@
 <!-- 顶部菜单栏 navbar -->
 <nav class="navbar navbar-default">
+
+
+    <div class="navbar-header">
+        <img src="${rc.contextPath}/images/favicon.ico" style="height: 100px;width:100px">
+        <img src="${rc.contextPath}/images/favicon.ico" style="height: 50px;width:50px">
+    </div>
     <div class="container-fluid">
         <div class="navbar-header">
             <img src="${rc.contextPath}/images/favicon.ico" style="height: 50px;width:50px">
             <img src="${rc.contextPath}/images/favicon.ico" style="height: 50px;width:50px">
         </div>
+
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="${rc.contextPath}">首页</a></li>

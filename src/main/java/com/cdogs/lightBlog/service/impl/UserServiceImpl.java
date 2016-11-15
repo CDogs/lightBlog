@@ -27,8 +27,10 @@ public class UserServiceImpl extends BaseService implements UserService {
 		// 检索用户信息后，对密码重新解密后set
 		user = userDao.getUser(user);
 		if (user != null) {
-			user.setPassword(CryptUtils.decryptString(user.getPassword()));			
+			user.setPassword(CryptUtils.decryptString(user.getPassword()));
+			System.out.println("3--user.password=" + user.getPassword());
 		}
+
 		return user;
 	}
 
@@ -37,8 +39,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 		
 		if (user.getPassword() != null) {	
 			//对密码加密
-			user.setPassword(CryptUtils.
-					encryptString(user.getPassword()));
+			user.setPassword(CryptUtils.encryptString(user.getPassword()));
 		}
 		System.out.println("修改中");
 		System.out.println(user.getId());

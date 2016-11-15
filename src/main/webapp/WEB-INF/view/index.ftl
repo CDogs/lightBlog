@@ -37,7 +37,7 @@
 
                 <!--要闻模块开始-->
 
-                <div class="col-xs-12 col-sm-9">
+                <div class="col-xs-12 col-sm-8">
     <#if articles?exists>
         <#list articles as article>
             <div class="panel panel-info jumbotron" style="border: 0">

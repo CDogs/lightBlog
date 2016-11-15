@@ -1,4 +1,4 @@
-<div class="col-xs-0 col-sm-3 " id="sidebar">
+<div class="col-xs-12 col-sm-3 col-sm-offset-1 " id="sidebar">
 
     <div class="panel panel-default">
         <h3 class="text-center text-primary ">全部文章(<#if countOfAllArticles?exists>${countOfAllArticles})</#if></h3>
@@ -69,7 +69,7 @@
                 <#else>
                 <#list tags as tag>
                     <#if (tag.count > 0)>
-                        &nbsp;&nbsp;&nbsp;&nbsp;<a class="text-primary" href="${rc.contextPath}/article/list.htm?tagId=${tag.id}"><span>${tag.name}(${tag.count})</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;<a class="text-primary" href="${rc.contextPath}/article/list.htm?tagId=${tag.id}"><span>${tag.name}(${tag.count})</span></a>&nbsp;&nbsp;&nbsp;
                     </#if>
                     <#if ((tag_index+1) % 3) == 0>
                         <hr style="border: 0 solid">

@@ -50,13 +50,13 @@ li {
 }
 
 .bowen_meta .bowen_time {
-    width: 56px;
-    height: 56px;
+    width: 100px;
+    height: 100px;
     -webkit-border-radius: 28px;
-    border-radius: 28px;
+    border-radius: 50px;
     text-align: center;
     overflow: hidden;
-    margin-left: 30px;
+    /*margin-left: 30px;*/
 }
 
 .bg6 {
@@ -65,20 +65,26 @@ li {
 }
 
 .bowen_meta .bowen_time .day {
-    font: 24px/1 Tahoma;
+    font: 35px/1 Tahoma;
     display: block;
-    margin-top: 10px;
+    margin-top: 30px;
     text-align: center;
 }
 
-.month {
-    font-size: 12px;
+.bowen_meta .bowen_time .month {
+    font-size: 18px;
     display: block;
     text-align: center;
 }
 
 .container1 {
     width: 60%;
+    height: auto;
+    margin: auto auto;
+    padding: 50px 15px;
+}
+.container_post {
+    width: 80%;
     height: auto;
     margin: auto auto;
     padding: 50px 15px;

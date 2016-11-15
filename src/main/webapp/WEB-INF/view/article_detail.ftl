@@ -45,7 +45,7 @@
                 <#include "layout/left_nav.ftl">
 
                 <!--jumbotron-->
-                <div class="col-xs-12 col-sm-9">
+                <div class="col-xs-12 col-sm-8">
 <#if article?exists>
 <#--                    <div class="jumbotron">
                         <h4>${article.title}</h4><h5>${article.createTime?string("yyyy-MM-dd HH:mm")} 发表</h5>

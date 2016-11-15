@@ -76,6 +76,8 @@ function Comment() {
 		var comment = new Comment();
 		if (comment.checkParam()) {
 			$.post(contextPath+"/comment/add.htm",$("#formCoom").serialize(), function(data) {
+				//alert(data);
+
 				if (data == "SUCCESS") {
 					$("#inputContent").val("");
 					//alert("评论成功~！");
@@ -85,7 +87,11 @@ function Comment() {
 					alert("无效的博客地址"); 
 				} else if (data == "FAIL") {
 					alert("评论失败~！"); 
+				} else if(data == "LOGOUT"){
+					//alert("对不起，你还没有登录");
+					$('#log-reg').modal('show')
 				}
+
 			});		
 		}
 	};

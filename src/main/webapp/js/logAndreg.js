@@ -57,7 +57,8 @@ $(document).ready(function(){
                 $("#loginMessage").text("登录失败，请检查账户和密码");
             }else{
                 //alert("成功啦");
-                window.location.assign(data);
+                window.location.reload();
+                alert("登陆成功");
             }
         });
         return false;

@@ -40,15 +40,22 @@
             <div class="col-sm-8">
                 <div class="panel panel-default">
 
-                    <form action="${rc.contextPath}/user/update.htm" method="post" enctype="multipart/form-data" id="myform">
-                        <input type="hidden" name="id" value="${user.id}">
+
+
                         <div class="panel-body">
                             <div class="user_info">
-                                <input class="file_style" type="file" id="file" name="image">
-                                <img src="${rc.contextPath}/images/portriat.jpg" onclick="onfile()">
+                                <input class="file_style" type="file" id="file" name="file">
+<#if user.image?exists>
+                                <img id="image" src="${rc.contextPath}/${user.image}" onclick="onfile()">
+<#else>
+    <img id="image" src="${rc.contextPath}/images/portriat.jpg" onclick="onfile()">
+</#if>
                             </div>
+                            <button class="btn btn-default text-center hidden" id="upload">&nbsp;&nbsp;确定修改</button>
                         </div>
+                    <form action="${rc.contextPath}/user/update.htm" method="post" enctype="multipart/form-data" id="myform">
 
+                        <input type="hidden" name="id" value="${user.id}">
                         <div class="panel-body text-center">
                             <span>名称：</span>
                             <input type="text" style="border: none" name="name" value="${user.name}">
@@ -91,6 +98,7 @@
 <script src="${rc.contextPath}/js/bootstrap.min.js"></script>
 
 <script src="${rc.contextPath}/js/edit.js"></script>
+<script src="${rc.contextPath}/js/ajaxfileupload.js"></script>
 
 <script>
     function onfile() {
@@ -147,6 +155,49 @@
             return false;
         });
     });
+    //图片上传预览
+    $("#file").change(function(){
+        var objUrl = getObjectURL(this.files[0]) ;
+        console.log("objUrl = "+objUrl) ;
+        if (objUrl) {
+            $("#image").attr("src", objUrl) ;
+            $("#upload").removeClass("hidden");
+        }
+    }) ;
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null ;
+        if (window.createObjectURL!=undefined) { // basic
+            url = window.createObjectURL(file) ;
+        } else if (window.URL!=undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        } else if (window.webkitURL!=undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url ;
+    }
+    //图片上传
+    $("#upload").click(function(){
+        $.ajaxFileUpload({
+                    url:'portrait_upload.htm',
+                    dataType : 'text',
+                    fileElementId:'file',
+                    success: function (data, status){
+
+                        if("SUCCESS" == data){
+                            alert("上传成功！")
+                        }else{
+                            alert("上传失败！")
+                        }
+
+
+                    },
+                    error: function (data, status)
+                    {
+                        alert("失败" + data);
+                    }
+                }
+        )});
 </script>
 
 </body>

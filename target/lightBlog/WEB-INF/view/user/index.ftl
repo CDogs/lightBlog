@@ -24,13 +24,14 @@
     <!-- 字体图标 -->
     <link href="${rc.contextPath}/css/font-awesome.min.css" rel="stylesheet">
 
-    <script src="${rc.contextPath}/ckeditor/ckeditor.js"></script>
+<#--    <link href="${rc.contextPath}/css/emojionearea.css">-->
+<#--    <script src="${rc.contextPath}/ckeditor/ckeditor.js"></script>-->
     <script src="${rc.contextPath}/js/jquery-1.11.1.min.js"></script>
-    <script>
+<#--    <script>
         function resetContent() {
             CKEDITOR.instances.content.setData('');
         }
-    </script>
+    </script>-->
 </head>
 
 <body>
@@ -43,20 +44,83 @@
     </div>
 
 
-    <div class="container1">
+<div class="container_post">
         <!--实现类似qq空间的排版效果-->
+<div class="row">
+    <div class="col-xs-3">
+        <div class="panel panel-danger">
+        <#if user.image?exists>
+            <img class="img-circle center-block" style="height: 90px;width: 90px" id="image" src="${rc.contextPath}/${user.image}">
+        <#else>
+            <img class="img-circle center-block" style="height: 90px;width: 90px" id="image" src="${rc.contextPath}/images/favicon.ico">
+        </#if>
+            <hr style="margin:0;">
+
+            <div class="panel-body">
+                <p class="text-center text-info">${user.name}</p>
+
+                <p class="text-center text-warning">A graphics designer, a web developer, a boyfriend, a friend, a son</p>
+
+
+            </div>
+        </div>
+    </div>
+        <!-- POSTING -->
+
+
+<div class="col-xs-8">
+            <form class="form-horizontal" action="" method="post">
+                <h4>Hoole 欢迎你，告知小伙伴吧</h4>
+                <div class="row">
+                    <div class="col-xs-9">
+                        <input type="text" name="title" id="arTit" class="form-control" style="border: none" placeholder="标题">
+                    </div>
+                    <div class="col-xs-3">
+                        <select class="form-control" id="category" name="category">
+                            <option selected="selected"><--选择 类别--></option>
+                        <#if artCates?exists>
+                            <#list artCates as cate>
+                                <option value="${cate.id}">${cate.name}</option>
+                            </#list>
+                        </#if>
+                        </select>
+                    </div>
+                </div>
+                <div style="padding:14px;margin-bottom: 0px" class="form-group">
+
+                    <textarea placeholder="Hoole 陪你，你呢？" style="resize: none;border: none" class="form-control" rows="6" onmousedown="s(event,this)" type="text" name="content" id="content"></textarea>
+                    <br>
+                    <div class="tag pull-left">
+                    <#if tags?exists>
+                        <#list tags as tag>
+                            <a href="javascript:;" name="${tag.id}" class="label label-default" style="font-size: small">${tag.name}</a>
+                        </#list>
+                    </#if>
+                    </div>
+
+                    <div class="pull-right">
+                        <button id="btnSb" type="submit" class="btn btn-info" >&nbsp;&nbsp;&nbsp;&nbsp;Post&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                    </div>
+                </div>
+
+
+            </form>
+</div>
+</div>
+    </div>
+        <!-- END OF POSTING -->
         <!--中部布局-->
-        <li class="bowen_item1 " >
+      <#--  <li class="bowen_item1 " >
             <form action="" method="post">
                 <div class="bowen_title">
-                <#--<span>标题:</span>-->
+                &lt;#&ndash;<span>标题:</span>&ndash;&gt;
                     <input type="text" name="title" id="arTit" class="form-control" placeholder="标题">
                 </div>
                 <br>
                 <div class="bowen_type">
-                <#--<span>类别:</span>-->
+                &lt;#&ndash;<span>类别:</span>&ndash;&gt;
                     <select class="form-control" id="category" name="category">
-                        <option selected="selected"><--选择 类别--></option>
+                        <option selected="selected"><--选择 类别&ndash;&gt;</option>
                     <#if artCates?exists>
                         <#list artCates as cate>
                             <option value="${cate.id}">${cate.name}</option>
@@ -76,7 +140,7 @@
                 <div class="tag bowen_type">
                 <#if tags?exists>
                     <#list tags as tag>
-                    <#--<span class="badge"><a href="javascript:;" name="${tag.id}">${tag.name}</a></span>-->
+                    &lt;#&ndash;<span class="badge"><a href="javascript:;" name="${tag.id}">${tag.name}</a></span>&ndash;&gt;
                         <a href="javascript:;" name="${tag.id}" class="label label-default" style="font-size: small">${tag.name}</a>
                     </#list>
                 </#if>
@@ -85,7 +149,8 @@
                 <button id="btnSb" type="submit" class="btn btn-default"><img src="${rc.contextPath}/images/write.png">发表</button>
                 <button type="reset" onclick="resetContent()" class="btn btn-default"><img src="${rc.contextPath}/images/rewrite.png">重置</button>
             </form>
-        </li>
+        </li>-->
+    <div class="container1">
         <ol class="bowen_list">
 
 
@@ -100,34 +165,7 @@
                         <span class="month">${article.createTime?string("MM")}月</span>
                     </div>
                 </div>
-<#--                <div class="bowen_content bor3 bg">
-                    &lt;#&ndash;<b class="bowen_quote_before c_tx3"></b>&ndash;&gt;
-                    <div class="bowen_detail">
-                        <div class="bowen_zhuan bbor3">
-                            <a target="_blank" href="${rc.contextPath}/article/read.htm?id=${article.id}">
-                            ${article.title}
-                            </a>
-                        </div>
-                        <p>
-                        ${article.content?html}
-                        </p>
 
-                        <#if article.tags?exists && (article.tags?size>0)>
-                            <span class="btn_float_left">
-                                <#list article.tags as tag>
-                                    <span class="btn btn-default"><img src="${rc.contextPath}/images/type.png">${tag.name}</span>
-                                </#list>
-                            </span>
-                        </#if>
-
-
-                        <span class="btn_float_right">
-                            <button data-id="${article.id}" data-action="delete" type="button" class="btn-adele btn alert-danger"><img src="${rc.contextPath}/images/del.png">删除</button>
-                            <span class="btn alert-info">浏览&nbsp&nbsp<span class="badge pull-right">${article.readCount}</span></span>
-                            <a data-toggle="modal" class="btn alert-warning" href="#comments" role="button"><img src="${rc.contextPath}/images/comm.png">查看评论</a>
-                        </span>
-                    </div>
-                </div>-->
 
             <div class="panel panel-info bowen_content">
                 <div class="panel-heading">
@@ -265,6 +303,18 @@
 <script src="${rc.contextPath}/js/alert.js"></script>
 <script src="${rc.contextPath}/javascripts/common.js"></script>
 <script src="${rc.contextPath}/javascripts/back-main.js"></script>
+
+
+<#--<script type="text/javascript" src="${rc.contextPath}/js/emojionearea.js"></script>-->
+
+
+<#--<script type="text/javascript">
+    $(document).ready(function() {
+        $("#content").emojioneArea({
+            autoHideFilters: true
+        });
+    });
+</script>-->
 
 <script type="text/javascript">
     $(function(){

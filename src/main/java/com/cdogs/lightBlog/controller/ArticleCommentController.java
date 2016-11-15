@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+import com.cdogs.lightBlog.auth.AuthPassport;
 import com.cdogs.lightBlog.dto.CommentsDto;
 import com.cdogs.lightBlog.dto.Page;
 import com.cdogs.lightBlog.dto.PageResult;
@@ -38,6 +39,7 @@ public class ArticleCommentController extends BaseController {
 	 * @param comment
 	 * @return String
 	 */
+	@AuthPassport
 	@RequestMapping("/add")
 	@ResponseBody
 	public String addArticleComment(ArticleComment comment,

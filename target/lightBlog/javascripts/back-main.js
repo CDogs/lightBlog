@@ -32,8 +32,10 @@ function listenArticleEve() {
 		} else {
 			_param.article.title = $.trim(''+$("#arTit").val());
 			_param.article.category = parseInt($("#category").val());
-			//_param.article.content = $('#content').val();
-			_param.article.content = CKEDITOR.instances.content.getData();
+			_param.article.content = $('#content').val();
+
+			//alert($('#content').val());
+			//_param.article.content = CKEDITOR.instances.content.getData();
 			//alert(CKEDITOR.instances.content.getData());
 			_param.article.id = parseInt($("#arTit").attr("data-id"));
 			//空值检测
@@ -60,6 +62,7 @@ function listenArticleEve() {
 			success : function (res) {
 				if(reqUrl == "/user/article/add.htm"){
 					//console.log(res);
+
 					showAirticle(res);
 				}
 				if (res == "SUCCESS") {
@@ -81,9 +84,11 @@ function listenArticleEve() {
 			alert("文章标题不能为空");	
 		} else if (_param.article.content === "" || _param.article.content === undefined) {		
 			alert("文章内容不能为空");	
-		} else if(_param.article.title.length > 200) {
-			alert("文章标题不可超过200个字符！");
-		} else {
+		} else if(_param.article.title.length > 100) {
+			alert("文章标题不可超过100个字符！");
+		} else if(_param.article.category === "" || _param.article.category === undefined) {
+			alert("文章类别不能为空");
+ 		} else{
 			return true;
 		}
 		return false;
@@ -111,8 +116,8 @@ function listenArticleEve() {
 		var articleStr = '<li class="bowen_item">	<div class="bowen_meta"><div class="bowen_time bg6"><span class="day">'+data.createTime.year+'</span><span class="month">'+data.createTime.month+'月</span></div></div><div class="panel panel-info bowen_content"><div class="panel-heading">	<span class="panel-title"><a target="_blank" href='+contextPath+'/article/read.htm?id='+data.id+'>'+data.title+'</a></span><div class="pull-right">'+data.createTime.date+' 日 '+data.createTime.hours+' 点&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="badge" title="浏览量">'+data.readCount+'</span>	</div></div><div class="panel-body">'+data.content.substring(0,500)+'...</div><div ><span class="btn_float_left">'+tagsStr+'</span>	<span class="btn_float_right"><a data-toggle="modal" href="#comments" role="button" title="查看评论"><i class="fa fa-commenting-o fa-lg"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a data-id='+data.id+' data-action="delete" title="删除"><i class="fa fa-trash-o fa-lg"></i></a></span></div></div>';
 
 		$("#arTit").val("");
-		resetContent();
-
+		//resetContent();
+        $("#content").val("");
 		$(".bowen_list").prepend(articleStr);
 	};
 

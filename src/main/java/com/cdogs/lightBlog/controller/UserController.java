@@ -5,6 +5,7 @@ import com.cdogs.lightBlog.dto.ArticleDto;
 import com.cdogs.lightBlog.dto.Page;
 import com.cdogs.lightBlog.dto.PageResult;
 import com.cdogs.lightBlog.pojo.*;
+import com.cdogs.lightBlog.util.FileUtils;
 import com.cdogs.lightBlog.util.JSONUtils;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -61,7 +64,8 @@ public class UserController extends BaseController {
         		request.getSession().setAttribute("UserID", user.getId());
         		request.getSession().setAttribute("UserName", user.getName());
         		//return new ModelAndView("redirect:/admin/ucenter.htm");
-				return "/lightBlog/user/ucenter.htm";
+				//return "/lightBlog/user/ucenter.htm";
+				return SUCCESS;
         	} else {//登录失败
         		//res.addObject("message", INVALID_USER);
 				return INVALID_USER;
@@ -131,6 +135,7 @@ public class UserController extends BaseController {
 		List<ExtendPage> pages = extendPageService.getAllPages();
 		return new ModelAndView("/register").addObject("pages", pages);
 	}
+
 	@RequestMapping("findUser")
 	public void findUser(){
 		System.out.println("正在执行findUser");
@@ -205,7 +210,7 @@ public class UserController extends BaseController {
 	}
 
 	/**
-	 * 初始化用户信息页面
+	 * 更新用户信息
 	 * @return ModelAndView
 	 */
 	@ResponseBody
@@ -237,5 +242,59 @@ public class UserController extends BaseController {
 		return FAIL;
 	}
 
-	
+
+
+	/**
+	 * 异步需要用到@ResponseBody
+	 * 头像上传
+	 * @param file
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/portrait_upload", method = RequestMethod.POST)
+	@ResponseBody
+	public String accountPortraitUpload(MultipartFile file,HttpServletRequest request)throws Exception {
+
+
+		System.out.println("开始异步上传。。。。");
+
+		//记录上传过程起始时的时间，用来计算上传时间
+		int pre = (int) System.currentTimeMillis();
+		if( null == file || file.isEmpty()){
+			System.out.println("文件为空，请重新检查");
+			return FAIL;
+		}
+
+
+		User currentUser = (User) request.getSession().getAttribute("user");
+		System.out.println(request.getSession().getServletContext().getContextPath());
+		String basePath = request.getSession().getServletContext().getRealPath("/AccountFile") + "/" + currentUser.getId() + "/portrait/";
+		String portraitPath = FileUtils.saveMultipartFileRelative(file, basePath);
+
+		//记录上传该文件后的时间
+		int finaltime = (int) System.currentTimeMillis();
+		System.out.println(finaltime - pre);
+
+		portraitPath = "AccountFile" + portraitPath;
+		System.out.println(portraitPath);
+
+		currentUser.setImage(portraitPath);
+		System.out.println(currentUser.getName());
+		//记录之前的密码，浅复制问题，string为不可变
+		String finalPass=currentUser.getPassword();
+
+		if (userService.updateUser(currentUser)) {
+			currentUser.setPassword(finalPass);
+			currentUser = userService.getUser(currentUser);
+
+			System.out.println(currentUser.getName());
+			request.getSession().setAttribute("user",currentUser);
+			request.getSession().setAttribute("UserID", currentUser.getId());
+			request.getSession().setAttribute("UserName",currentUser.getName());
+			return SUCCESS;
+		}
+
+		return FAIL;
+	}
 }
